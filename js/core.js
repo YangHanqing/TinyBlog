@@ -38,8 +38,8 @@ $(document).ready(function() {
                 name = name.substr(0, name.length - 5);
                 type = "html";
             }
-            console.log(name);
-            console.log(titleString);
+            // console.log(name);
+            // console.log(titleString);
             if (name == titleString) {
                 $("#title").text(name);
                 readmeURL = blogURL;
@@ -55,6 +55,9 @@ $(document).ready(function() {
             new_a.attr("onclick", "setBlogTxt(this)");
             new_li.append(new_a);
             $('#nav').append(new_li);
+            $('#nav2').append(new_li.clone());
+
+
 
         }
 
@@ -94,6 +97,12 @@ $(document).ready(function() {
 
 
 function setBlogTxt(obj) {
+
+    // 隐藏Button
+    if (!$('#btnNav').is(':hidden')) {
+        $('#btnNav').click();
+    }
+
     obj = $(obj);
     var blogName = obj.attr("data_name");
     var blogURL = obj.attr("data_blogURL");

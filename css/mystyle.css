@@ -1,7 +1,12 @@
+@media (min-width: 768px) {
+    #nav2 {
+        display: none;
+    }
+}
+
 #comments {
     display: none;
 }
-
 
 /*
  * Base structure
@@ -43,7 +48,7 @@ body {
 /* Hide for mobile, show later */
 
 .sidebar {
-    /*display: none;*/
+    display: none;
 }
 
 @media (min-width: 768px) {
