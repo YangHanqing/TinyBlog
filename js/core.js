@@ -8,7 +8,7 @@ $(document).ready(function() {
         splitFlag = "https://";
     }
     var user = webURL.split(splitFlag)[1].split(".")[0];
-    user = 'yanghanqing';
+    //user = 'yanghanqing';
     blogListURL = 'https://api.github.com/repos/' + user + '/' + user + '.github.io/contents/blog';
     issuesList = 'https://api.github.com/repos/' + user + '/' + user + '.github.io/issues';
     issuesHTML = 'https://github.com/' + user + '/' + user + '.github.io/issues'
