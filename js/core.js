@@ -1,11 +1,14 @@
 var issuesList;
 var issuesHTML;
+
 $(document).ready(function() {
-
-
-
-    var user = window.location.href.split("http://")[1].split(".")[0];
-    //user = 'yanghanqing';
+    var webURL = window.location.href;
+    var splitFlag = "http://";
+    if (webURL.substring(0, 5) == "https") {
+        splitFlag = "https://";
+    }
+    var user = webURL.split(splitFlag)[1].split(".")[0];
+    user = 'yanghanqing';
     blogListURL = 'https://api.github.com/repos/' + user + '/' + user + '.github.io/contents/blog';
     issuesList = 'https://api.github.com/repos/' + user + '/' + user + '.github.io/issues';
     issuesHTML = 'https://github.com/' + user + '/' + user + '.github.io/issues'
@@ -139,6 +142,7 @@ function setBlogTxt(obj) {
 }
 
 function setCommentURL(issuesList, blogName) {
+    $("#comments").show();
     console.log("获取并设置评论区");
 
 
