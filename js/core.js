@@ -180,7 +180,8 @@ function setComment(commentURL) {
         for (var i = 0; i < json.length; i++) {
             var avatar_url = json[i].user.avatar_url; // avatar_url
             var user = json[i].user.login;
-            var updated_at = json[i].updated_at;
+            //var updated_at = json[i].updated_at;
+            var updated_at = new Date(json[i].updated_at).toLocaleString();
             var body = json[i].body;
 
             // add blog list elements
