@@ -33,7 +33,7 @@
 
 <body>
 
-    <div class="title">
+    <div class="title" id="aaaa">
         <h1>欢迎来到ZhjGod的博客</h1>
         <h2><a href="javascript:;" id="join">进入博客</a></h2>
     </div>
@@ -132,7 +132,7 @@
             var self = this;
             $("#join").click(function() {
                 document.getElementsByTagName('head')[0].removeChild(self);
-                $(".title").hide();
+                $("#aaaa").remove();
                 $("#mmm").show();
             });
         });
