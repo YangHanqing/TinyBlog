@@ -12,7 +12,7 @@ $(document).ready(function() {
     blogListURL = 'https://api.github.com/repos/' + user + '/' + user + '.github.io/contents/blog';
     issuesList = 'https://api.github.com/repos/' + user + '/' + user + '.github.io/issues';
     issuesHTML = 'https://github.com/' + user + '/' + user + '.github.io/issues'
-    readmeURL = 'https://raw.githubusercontent.com/' + user + '/' + user + '.github.io/master/index.html';
+    readmeURL = 'https://raw.githubusercontent.com/' + user + '/' + user + '.github.io/master/list.html';
 
 
     $("#header").text("ZhjGo Blog");
