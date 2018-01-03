@@ -36,6 +36,7 @@
     <div class="title" id="aaaa">
         <h1>欢迎来到ZhjGod的博客</h1>
         <h2><a href="javascript:;" id="join">进入博客</a></h2>
+        <a data_blogurl="https://raw.githubusercontent.com/YangHanqing/yanghanqing.github.io/master/list.html" data_name="TinyBlog" href="#" data_type="markdown" onclick="setBlogTxt(this)">TinyBlog</a>
     </div>
 
     <!-- Navigation -->
@@ -125,28 +126,28 @@
 
 </html>
 <script>
-    function loadCss(url, callback) {
-        var link = document.createElement('link');
-        link.type = "text/css";
-        link.rel = "stylesheet";
-        link.href = url;
-        link.media = 'screen';
-        document.getElementsByTagName('head')[0].appendChild(link);
-        if (callback) {
-            callback.call(link);
-        }
-    }
+    // function loadCss(url, callback) {
+    //     var link = document.createElement('link');
+    //     link.type = "text/css";
+    //     link.rel = "stylesheet";
+    //     link.href = url;
+    //     link.media = 'screen';
+    //     document.getElementsByTagName('head')[0].appendChild(link);
+    //     if (callback) {
+    //         callback.call(link);
+    //     }
+    // }
 
-    window.onload = function() {
-        loadCss('./css/new.css', function() {
-            var self = this;
-            $("#join").click(function() {
-                document.getElementsByTagName('head')[0].removeChild(self);
-                $("#aaaa").hide();
-                $(".fade").show();
-                $(".container-fluid").show();
-                $(".navbar-fixed-top").show();
-            });
-        });
-    };
+    // window.onload = function() {
+    //     loadCss('./css/new.css', function() {
+    //         var self = this;
+    //         $("#join").click(function() {
+    //             document.getElementsByTagName('head')[0].removeChild(self);
+    //             $("#aaaa").hide();
+    //             $(".fade").show();
+    //             $(".container-fluid").show();
+    //             $(".navbar-fixed-top").show();
+    //         });
+    //     });
+    // };
 </script>
