@@ -127,6 +127,18 @@
 
 </html>
 <script>
+    function loadCss(url, callback) {
+        var link = document.createElement('link');
+        link.type = "text/css";
+        link.rel = "stylesheet";
+        link.href = url;
+        link.media = 'screen';
+        document.getElementsByTagName('head')[0].appendChild(link);
+        if (callback) {
+            callback.call(link);
+        }
+    }
+
     window.onload = function() {
         loadCss('./css/new.css', function() {
             var self = this;
