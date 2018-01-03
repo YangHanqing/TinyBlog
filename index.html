@@ -127,8 +127,14 @@
 
 </html>
 <script>
-    $("#join").click(function() {
-        $(".title").hide();
-        $("#mmm").show();
-    });
+    window.onload = function() {
+        loadCss('./css/new.css', function() {
+            var self = this;
+            $("#join").click(function() {
+                document.getElementsByTagName('head')[0].removeChild(self);
+                $(".title").hide();
+                $("#mmm").show();
+            });
+        });
+    };
 </script>
