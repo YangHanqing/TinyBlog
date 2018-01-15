@@ -11,12 +11,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="tinyblog" content="v1.2">
     <title>ZhjGo博客</title>
-    <!-- <link href="./css/new.css" rel="stylesheet"> -->
+
     <link href="//cdn.bootcss.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="//cdn.bootcss.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/mystyle.css" rel="stylesheet">
+    <link href="./css/new.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
     <!--markdown-->
     <link rel="stylesheet" href="./editor.md/css/editormd.preview.min.css" />
     <script src="./editor.md/lib/marked.min.js"></script>
@@ -28,36 +30,26 @@
     <script src="./editor.md/lib/jquery.flowchart.min.js"></script>
     <script src="./editor.md/editormd.min.js"></script>
     <!--markdown-->
+
     <script src="./js/core.js"></script>
+    <script src="./js/new.js"></script>
+
 </head>
 
 <body>
 
-    <!-- <div class="title" id="aaaa">
-        <h1>欢迎来到ZhjGod的博客</h1>
-        <h2><a href="javascript:;" id="join">进入博客</a></h2>
-        <a data_blogurl="https://raw.githubusercontent.com/YangHanqing/yanghanqing.github.io/master/list.html" data_name="TinyBlog" href="#" data_type="markdown" onclick="setBlogTxt(this)">TinyBlog</a>
-    </div> -->
-
-    <!--
-    <div class="title" id="aaaa">
-        <h1>欢迎来到ZhjGod的博客</h1>
-        <h2><a href="javascript:;" id="join">进入博客</a></h2>
-        <a data_blogurl="https://raw.githubusercontent.com/YangHanqing/yanghanqing.github.io/master/list.html" data_name="TinyBlog" href="#" data_type="markdown" onclick="setBlogTxt(this)">TinyBlog</a>
-    </div>
--->
     <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" style="display:none">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" id="btnNav">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                <a class="navbar-brand" href="#" id="header">BlogName</a>
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#" id="header">ZhjGo博客</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -69,7 +61,7 @@
         <!-- /.container -->
     </nav>
 
-    <div class="container-fluid " style="display:none">
+    <div class="container-fluid ">
         <div class="row">
 
             <div class="col-sm-3 col-md-2 sidebar ">
@@ -81,26 +73,32 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <!--正文-->
-                <h1 class="page-header" id="title">About Me</h1>
+                <!-- <h1 class="page-header" id="title">About Me</h1>
                 <div id="article"> HelloWorld! 你好 世界！ </div>
-
                 <div class="panel panel-white post " id="comments">
                     <div class="post-footer">
                         <div class="input-group">
                             <input id="comment_txt" class="form-control" placeholder="Add a comment" type="text">
                             <span class="input-group-addon">
-                            <a href="#"><i class="fa fa-edit" onclick="login()"></i></a>  
-                        </span>
+                        <a href="#"><i class="fa fa-edit" onclick="login()"></i></a>  
+                    </span>
                         </div>
                         <ul class="comments-list" id="commentsList">
                         </ul>
                     </div>
+				</div> -->
+
+                <div class="title">
+                    <h3>HelloWorld!</h3>
+                    <h1>你好 世界！</h1>
+                    <h3>555</h3>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display:none">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -127,34 +125,8 @@
 
 
 
+
 </body>
 
-<script src="./js/new.js"></script>
 
 </html>
-<script>
-    function loadCss(url, callback) {
-        var link = document.createElement('link');
-        link.type = "text/css";
-        link.rel = "stylesheet";
-        link.href = url;
-        link.media = 'screen';
-        document.getElementsByTagName('head')[0].appendChild(link);
-        if (callback) {
-            callback.call(link);
-        }
-    }
-
-    window.onload = function() {
-        loadCss('./css/new.css', function() {
-            var self = this;
-            $("#join").click(function() {
-                document.getElementsByTagName('head')[0].removeChild(self);
-                $("#aaaa").hide();
-                $(".fade").show();
-                $(".container-fluid").show();
-                $(".navbar-fixed-top").show();
-            });
-        });
-    };
-</script>
