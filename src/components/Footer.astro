@@ -1,0 +1,26 @@
+---
+import { siteConfig } from "../site.config";
+const { github, twitter, email } = siteConfig.social;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>&copy; {year} {siteConfig.author}</span>
+    <span>
+      {github && <a href={github} target="_blank" rel="noopener">GitHub</a>}
+      {twitter && (
+        <>
+          {" · "}
+          <a href={twitter} target="_blank" rel="noopener">Twitter</a>
+        </>
+      )}
+      {email && (
+        <>
+          {" · "}
+          <a href={`mailto:${email}`}>Email</a>
+        </>
+      )}
+    </span>
+  </div>
+</footer>

@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteConfig } from "../site.config";
+
+const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout>
+  <h1 class="page-title">{siteConfig.title}</h1>
+  <p class="page-lede">{siteConfig.bio}</p>
+
+  <ul class="post-list">
+    {
+      posts.map((post) => (
+        <li>
+          <a class="post-title" href={`/blog/${post.slug}/`}>
+            {post.data.title}
+          </a>
+          <span class="post-date">
+            {post.data.date.toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </span>
+          {post.data.description && (
+            <p class="post-desc">{post.data.description}</p>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

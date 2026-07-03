@@ -1,44 +1,167 @@
-## TinyBlog有什么特性
-1. 完全静态,以至于没有任何生成程序
-2. 支持Markdown常用语法
-3. 支持Github用户添加评论
+# TinyBlog
 
-## 为什么要写 TinyBlog
-有时候只想简单的写一篇文章,WordPress毫无疑问过于臃肿,Jekyll需要安装,而我想要一种更简单的更新博客方式,受到开源项目[Simple](https://github.com/isnowfy/simple)的启发,我用几个晚上的时间写了一个极简的静态博客.
+A zero-config static blog: write Markdown, `git push`, done. Comments are
+"borrowed" from GitHub Issues — no database, no third-party widget, no
+backend of any kind.
 
-每次写文章只有一个步骤,push写好的md文章到`./blog`目录下, that's all .
+**[English](#english)** · **[中文](#中文)**
 
-## TinyBlog 教程
-1. 从[TinyBlog的Github主页](https://github.com/YangHanqing/tinyblog)fork一份到你的仓库,更改项目名称为`your_name.github.io`,几分钟后Github会自动为你开通[your_name.github.io](yanghanqing.github.io)的个人主页
+---
 
-2. 修改`about me.md`文件作为你的个人介绍,为了更快的加载速度,也可以选择写死在`index.html`中
+## English
 
-3. 写好markdown文件后,保存到`./blog`目录下,依次执行下面的语句即可.如果你不熟悉Git如何使用,请参考Github提供的相关教程.
+### Features
 
-	> git add .
-	> git commit -m "Update blog"
-	> git push
-	
-4. 如果修改了CNAME,记得core.js中把`user`改为自己的账户名,否则通过URL自动获取.
+- **Truly static** — built with [Astro](https://astro.build), deployed as
+  plain HTML/CSS/JS to GitHub Pages.
+- **Write in Markdown** — drop a file in `src/content/blog/`, it appears on
+  the site, sorted by its `date` frontmatter (no GitHub API needed to know
+  publish order — Astro resolves it at build time).
+- **Comments via GitHub Issues** — each post gets its own Issue on your repo;
+  readers comment with a personal access token, nothing touches a server you
+  run.
+- **Zero config to fork** — owner/repo is auto-detected from `git remote` at
+  build time (`src/lib/repo.ts`). Fork it, push, and it just works.
+- **Light/dark mode**, responsive layout, no render-blocking JS beyond the
+  comment widget.
 
-5. 分享文章给他人,可以通过在链接后加如下参数 `?title=文章名`
+### Quickstart
 
-6. 建议新文章发布后,评论栏留空,并点击一下提交评论按钮,这样会用你自己的账户创建issue,以后如果comment有更新,不会打扰到第一个评论的人.
+1. Fork this repo and rename it to `<your-github-username>.github.io`.
+2. In the repo Settings → Pages, set the source to **GitHub Actions**
+   (the included workflow at `.github/workflows/deploy.yml` handles the rest).
+3. Edit `src/site.config.ts` — title, bio, social links. That's the only
+   file you need to touch; owner/repo isn't in there because it's detected
+   automatically.
+4. Write a post:
+   ```
+   src/content/blog/my-first-post.md
+   ```
+   ```yaml
+   ---
+   title: "My First Post"
+   date: 2026-07-04
+   description: "One line for the post list."
+   ---
+   Hello, world.
+   ```
+5. `git push`. GitHub Actions builds and deploys automatically —
+   `https://<your-username>.github.io` is live within a minute or two.
 
-## 迭代方向
-* 修复未知Bug(没有做测试,也没有考虑Github通讯不佳的情况)
-* 支持响应式布局(第一次写前端,很手生)
-* 基本上整个网站有交互就有AJAX,所以需要美化和增加相应的Loading提示
-* 支持文章按发布时间排序(Github没有获取单独文件update时间的api,所有第一版没有处理,初步想法是通过 `001#TITLE`这样的命名规范来处理文章顺序)
-* 做一个支持MD语法的Chrome扩展来更新博客,不过如果做了扩展,和Jekyll也没什么区别了,再议.
-* 改成 ReactJS 驱动来练练手
+Local dev: `npm install && npm run dev`.
 
-## 评论功能
-评论这个功能我是取巧了,利用Github API在项目issues下新建comment来存储,实现了原本需要第三方插件才能完成的功能.
-## 许可
+### How comments work
+
+GitHub removed password-based API auth entirely, so Basic Auth with a
+username+password is no longer possible. This uses a **classic personal
+access token** instead:
+
+1. A commenter clicks "Generate one" in the comment box, which opens GitHub's
+   token page pre-scoped to `public_repo`.
+2. The token is pasted into the page and kept only in that tab's
+   `sessionStorage` — it's sent straight to `api.github.com` from the
+   browser and never touches any server of yours.
+3. On first comment, the site opens an Issue titled `[TinyBlog] <post-slug>`;
+   every comment after that (from anyone) posts to the same Issue.
+
+**Security note:** a classic PAT with `public_repo` scope can open issues/PRs
+on *any* public repo you have access to, not just this one — that's a GitHub
+limitation (classic tokens aren't repo-scoped). Anyone commenting should use
+a token dedicated to this purpose and revoke it afterward, or create a
+fine-grained token restricted to just this repository with only the
+"Issues: read and write" permission.
+
+Reading comments is unauthenticated and public (GitHub's anonymous API rate
+limit is 60 requests/hour per IP) — fine for a personal blog's traffic.
+
+### Project layout
+
+```
+src/
+  content/blog/*.md      # posts (frontmatter: title, date, description, draft)
+  site.config.ts         # title, bio, nav, social links — the file you edit
+  lib/repo.ts            # auto-detects owner/repo from git remote
+  components/Comments.tsx # the GitHub-Issues comment widget (Preact island)
+  pages/                 # index, blog/[...slug], about, 404
+```
+
+### License
+
 MIT
-	
 
+---
 
+## 中文
 
+### 特性
 
+- **真正的静态站点** — 用 [Astro](https://astro.build) 构建，产物是纯
+  HTML/CSS/JS，部署到 GitHub Pages。
+- **写 Markdown 就是发文章** — 把文件放进 `src/content/blog/`，站点自动展示，
+  按 frontmatter 里的 `date` 排序（不再需要调用 GitHub API 猜测发布时间——
+  Astro 在构建期就已经知道）。
+- **借用 GitHub Issues 做评论** — 每篇文章对应一个 Issue，评论直接调用
+  GitHub API，不经过任何你自己的服务器。
+- **Fork 即用，零配置** — owner/repo 在构建时通过 `git remote` 自动识别
+  （见 `src/lib/repo.ts`），fork 完 push 上去就能跑。
+- **明暗双主题**、响应式布局，除评论组件外没有额外的阻塞 JS。
+
+### 快速开始
+
+1. Fork 本仓库，改名为 `<你的GitHub用户名>.github.io`。
+2. 仓库 Settings → Pages，Source 选择 **GitHub Actions**（已经写好的
+   `.github/workflows/deploy.yml` 会自动完成构建和部署）。
+3. 编辑 `src/site.config.ts`——标题、简介、社交链接。这是唯一需要手动改的
+   文件，owner/repo 不在里面，因为会自动识别。
+4. 写一篇文章：
+   ```
+   src/content/blog/my-first-post.md
+   ```
+   ```yaml
+   ---
+   title: "我的第一篇文章"
+   date: 2026-07-04
+   description: "列表页展示的一句话简介"
+   ---
+   你好，世界。
+   ```
+5. `git push`，GitHub Actions 会自动构建部署，一两分钟后
+   `https://<你的用户名>.github.io` 就能访问了。
+
+本地开发：`npm install && npm run dev`。
+
+### 评论功能是怎么做的
+
+GitHub 早已彻底下线了密码方式的 API 认证，用户名+密码走 Basic Auth 的方式
+现在完全走不通了，因此改用 **Classic Personal Access Token（经典个人访问
+令牌）**：
+
+1. 评论者点击评论框里的"Generate one"，会打开 GitHub 的令牌创建页，并预先
+   勾好 `public_repo` 权限。
+2. 令牌粘贴进页面后只保存在当前标签页的 `sessionStorage` 里——直接从浏览器
+   发往 `api.github.com`，不经过你的任何服务器。
+3. 第一条评论会自动创建一个标题为 `[TinyBlog] <文章slug>` 的 Issue，之后
+   所有人的评论都发到这同一个 Issue 下。
+
+**安全提示：** 带 `public_repo` 权限的经典令牌可以对你有权限的**任意**公开
+仓库开 issue/PR，不只是这一个——这是 GitHub 经典令牌本身的限制（不支持限定
+单仓库）。建议评论者用专门为此创建、用完即撤销的令牌，或者改用
+fine-grained token，把权限精确限定到这一个仓库的 "Issues: read and write"。
+
+读取评论不需要登录，公开可见（GitHub 匿名 API 限额是每个 IP 每小时 60
+次）——对个人博客的访问量完全够用。
+
+### 项目结构
+
+```
+src/
+  content/blog/*.md      # 文章（frontmatter: title, date, description, draft）
+  site.config.ts         # 标题、简介、导航、社交链接——需要手动编辑的文件
+  lib/repo.ts            # 从 git remote 自动识别 owner/repo
+  components/Comments.tsx # GitHub Issues 评论组件（Preact island）
+  pages/                 # index、blog/[...slug]、about、404
+```
+
+### 许可
+
+MIT

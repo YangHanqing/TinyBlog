@@ -1,4 +1,12 @@
 
+### Node / Astro ###
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+
 # Created by https://www.gitignore.io/api/macos
 
 ### macOS ###

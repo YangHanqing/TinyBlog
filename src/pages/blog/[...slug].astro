@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Comments from "../../components/Comments.tsx";
+import { getRepoInfo } from "../../lib/repo";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const { owner, repo } = getRepoInfo();
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <article>
+    <header class="post-header">
+      <h1 class="page-title">{post.data.title}</h1>
+      <span class="post-date">
+        {post.data.date.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </span>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <Comments
+      client:visible
+      owner={owner}
+      repo={repo}
+      slug={post.slug}
+      postTitle={post.data.title}
+    />
+  </article>
+</BaseLayout>

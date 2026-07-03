@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { siteConfig } from "../site.config";
+---
+
+<BaseLayout title="About">
+  <h1 class="page-title">About</h1>
+  <div class="prose">
+    <p>{siteConfig.bio}</p>
+    <p>
+      Edit this page directly at <code>src/pages/about.astro</code>, or your
+      bio in <code>src/site.config.ts</code>.
+    </p>
+  </div>
+</BaseLayout>
