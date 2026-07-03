@@ -4,12 +4,24 @@ import { siteConfig } from "../site.config";
 ---
 
 <BaseLayout title="About">
-  <h1 class="page-title">About</h1>
+  <h1 class="page-title">
+    <span data-lang="en">About</span>
+    <span data-lang="zh">关于</span>
+  </h1>
   <div class="prose">
-    <p>{siteConfig.bio}</p>
     <p>
-      Edit this page directly at <code>src/pages/about.astro</code>, or your
-      bio in <code>src/site.config.ts</code>.
+      <span data-lang="en">{siteConfig.bio.en}</span>
+      <span data-lang="zh">{siteConfig.bio.zh}</span>
+    </p>
+    <p>
+      <span data-lang="en">
+        Edit this page directly at <code>src/pages/about.astro</code>, or
+        your bio in <code>src/site.config.ts</code>.
+      </span>
+      <span data-lang="zh">
+        直接编辑 <code>src/pages/about.astro</code>，或者在
+        <code>src/site.config.ts</code> 里改简介。
+      </span>
     </p>
   </div>
 </BaseLayout>

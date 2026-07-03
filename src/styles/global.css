@@ -14,6 +14,14 @@
   --content-width: 42rem;
 }
 
+[data-lang] {
+  display: none;
+}
+html[data-locale="en"] [data-lang="en"],
+html[data-locale="zh"] [data-lang="zh"] {
+  display: revert;
+}
+
 [data-theme="dark"] {
   --bg: #0f1115;
   --bg-subtle: #171a21;

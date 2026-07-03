@@ -24,6 +24,9 @@ backend of any kind.
   build time (`src/lib/repo.ts`). Fork it, push, and it just works.
 - **Light/dark mode**, responsive layout, no render-blocking JS beyond the
   comment widget.
+- **Auto EN/中文** — page chrome and the comment widget switch language based
+  on the visitor's browser language (`navigator.language`), no toggle needed.
+  See `src/i18n.ts`.
 
 ### Quickstart
 
@@ -49,6 +52,30 @@ backend of any kind.
    `https://<your-username>.github.io` is live within a minute or two.
 
 Local dev: `npm install && npm run dev`.
+
+### Custom domain
+
+If you'd rather serve the site from your own domain instead of
+`<username>.github.io`:
+
+1. Add a `CNAME` file to `public/CNAME` containing just your domain, e.g.
+   `blog.example.com` (Astro copies everything in `public/` to the site
+   root, so this becomes `dist/CNAME` on every build). **This step matters
+   even if you also set the domain in the GitHub UI** — with an
+   Actions-based deployment, each deploy replaces the whole site; without a
+   `CNAME` file in the build output, GitHub can silently clear the custom
+   domain setting on the next push.
+2. At your DNS provider:
+   - **Apex domain** (`example.com`): four `A` records pointing to
+     `185.199.108.153`, `.109.153`, `.110.153`, `.111.153` (optionally
+     `AAAA` records too, see [GitHub's docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)).
+   - **Subdomain** (`blog.example.com`): one `CNAME` record pointing to
+     `<username>.github.io`.
+3. In Settings → Pages, enter the domain under "Custom domain" and save —
+   GitHub verifies it and (after DNS propagates) offers "Enforce HTTPS".
+   Turn that on.
+
+No code changes beyond the `public/CNAME` file are required.
 
 ### How comments work
 
@@ -81,6 +108,7 @@ src/
   content/blog/*.md      # posts (frontmatter: title, date, description, draft)
   site.config.ts         # title, bio, nav, social links — the file you edit
   lib/repo.ts            # auto-detects owner/repo from git remote
+  i18n.ts                # EN/中文 strings for the comment widget + page chrome
   components/Comments.tsx # the GitHub-Issues comment widget (Preact island)
   pages/                 # index, blog/[...slug], about, 404
 ```
@@ -105,6 +133,8 @@ MIT
 - **Fork 即用，零配置** — owner/repo 在构建时通过 `git remote` 自动识别
   （见 `src/lib/repo.ts`），fork 完 push 上去就能跑。
 - **明暗双主题**、响应式布局，除评论组件外没有额外的阻塞 JS。
+- **中英文自动切换** — 页面文案和评论组件会根据访客浏览器语言
+  （`navigator.language`）自动切换，不需要手动切换按钮。见 `src/i18n.ts`。
 
 ### 快速开始
 
@@ -129,6 +159,28 @@ MIT
    `https://<你的用户名>.github.io` 就能访问了。
 
 本地开发：`npm install && npm run dev`。
+
+### 自定义域名
+
+如果不想用 `<用户名>.github.io`，想换成自己的域名：
+
+1. 在 `public/CNAME` 里写一行你的域名，比如 `blog.example.com`（Astro 会把
+   `public/` 下所有文件原样拷到站点根目录，构建后就是 `dist/CNAME`）。
+   **这一步很重要，即使你已经在 GitHub 网页上填过自定义域名也不能省**——
+   用 GitHub Actions 部署时，每次发布都会整体替换站点内容，如果构建产物里
+   没有 `CNAME` 文件，GitHub 可能会在下一次 push 后悄悄清空你设置的自定义
+   域名。
+2. 去你的 DNS 服务商那边配置：
+   - **裸域名**（`example.com`）：加四条 `A` 记录，分别指向
+     `185.199.108.153`、`.109.153`、`.110.153`、`.111.153`（可以再加
+     `AAAA` 记录，详见
+     [GitHub 官方文档](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)）。
+   - **子域名**（`blog.example.com`）：加一条 `CNAME` 记录，指向
+     `<用户名>.github.io`。
+3. 仓库 Settings → Pages，在 "Custom domain" 里填上域名并保存——GitHub 会
+   校验，DNS 生效后会出现 "Enforce HTTPS" 选项，勾上它。
+
+除了这个 `public/CNAME` 文件，不需要改任何代码。
 
 ### 评论功能是怎么做的
 
@@ -158,6 +210,7 @@ src/
   content/blog/*.md      # 文章（frontmatter: title, date, description, draft）
   site.config.ts         # 标题、简介、导航、社交链接——需要手动编辑的文件
   lib/repo.ts            # 从 git remote 自动识别 owner/repo
+  i18n.ts                # 评论组件和页面文案的中英文字符串
   components/Comments.tsx # GitHub Issues 评论组件（Preact island）
   pages/                 # index、blog/[...slug]、about、404
 ```

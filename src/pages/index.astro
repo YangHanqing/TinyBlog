@@ -10,7 +10,10 @@ const posts = (await getCollection("blog", ({ data }) => !data.draft)).sort(
 
 <BaseLayout>
   <h1 class="page-title">{siteConfig.title}</h1>
-  <p class="page-lede">{siteConfig.bio}</p>
+  <p class="page-lede">
+    <span data-lang="en">{siteConfig.bio.en}</span>
+    <span data-lang="zh">{siteConfig.bio.zh}</span>
+  </p>
 
   <ul class="post-list">
     {

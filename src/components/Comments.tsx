@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "preact/hooks";
+import { currentLocale, strings } from "../i18n";
 
 interface Props {
   owner: string;
@@ -22,6 +23,7 @@ function issueTitleFor(slug: string) {
 }
 
 export default function Comments({ owner, repo, slug, postTitle }: Props) {
+  const [t] = useState(() => strings[currentLocale()]);
   const [commentsUrl, setCommentsUrl] = useState<string | null>(null);
   const [comments, setComments] = useState<GhComment[]>([]);
   const [status, setStatus] = useState<"loading" | "ready">("loading");
@@ -36,15 +38,18 @@ export default function Comments({ owner, repo, slug, postTitle }: Props) {
     setToken(sessionStorage.getItem(TOKEN_KEY) || "");
   }, []);
 
-  const loadComments = useCallback(async (url: string) => {
-    try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(String(res.status));
-      setComments(await res.json());
-    } catch {
-      setErrorMsg("Couldn't load comments (GitHub API rate limit?).");
-    }
-  }, []);
+  const loadComments = useCallback(
+    async (url: string) => {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(String(res.status));
+        setComments(await res.json());
+      } catch {
+        setErrorMsg(t.comments_error_load);
+      }
+    },
+    [t]
+  );
 
   useEffect(() => {
     const wantedTitle = issueTitleFor(slug);
@@ -62,9 +67,9 @@ export default function Comments({ owner, repo, slug, postTitle }: Props) {
           return loadComments(match.comments_url);
         }
       })
-      .catch(() => setErrorMsg("Couldn't check for existing comments."))
+      .catch(() => setErrorMsg(t.comments_error_check))
       .finally(() => setStatus("ready"));
-  }, [owner, repo, slug, loadComments]);
+  }, [owner, repo, slug, loadComments, t]);
 
   function saveToken(v: string) {
     setToken(v);
@@ -106,16 +111,13 @@ export default function Comments({ owner, repo, slug, postTitle }: Props) {
         body: JSON.stringify({ body }),
       });
       if (!res.ok) {
-        if (res.status === 401)
-          throw new Error(
-            "Token rejected — check it's valid and has public_repo scope."
-          );
+        if (res.status === 401) throw new Error(t.comments_error_token);
         throw new Error(`Couldn't post comment (${res.status}).`);
       }
       setBody("");
       await loadComments(url);
     } catch (err: any) {
-      setErrorMsg(err.message || "Something went wrong.");
+      setErrorMsg(err.message || t.comments_error_generic);
     } finally {
       setPosting(false);
     }
@@ -127,12 +129,14 @@ export default function Comments({ owner, repo, slug, postTitle }: Props) {
 
   return (
     <section class="comments">
-      <h2>Comments</h2>
+      <h2>{t.comments_heading}</h2>
 
-      {status === "loading" && <p class="comment-status">Loading comments…</p>}
+      {status === "loading" && (
+        <p class="comment-status">{t.comments_loading}</p>
+      )}
 
       {status === "ready" && comments.length === 0 && (
-        <p class="comment-empty">No comments yet — be the first.</p>
+        <p class="comment-empty">{t.comments_empty}</p>
       )}
 
       {comments.length > 0 && (
@@ -159,7 +163,7 @@ export default function Comments({ owner, repo, slug, postTitle }: Props) {
 
       <form class="comment-form" onSubmit={submit}>
         <textarea
-          placeholder="Write a comment (Markdown supported)…"
+          placeholder={t.comments_placeholder}
           value={body}
           onInput={(e) => setBody((e.target as HTMLTextAreaElement).value)}
         />
@@ -168,7 +172,7 @@ export default function Comments({ owner, repo, slug, postTitle }: Props) {
             class="token-input"
             style={{ maxWidth: "16rem" }}
             type="password"
-            placeholder="GitHub personal access token"
+            placeholder={t.comments_token_placeholder}
             value={token}
             onInput={(e) => saveToken((e.target as HTMLInputElement).value)}
           />
@@ -177,17 +181,15 @@ export default function Comments({ owner, repo, slug, postTitle }: Props) {
             type="submit"
             disabled={posting || !token || !body.trim()}
           >
-            {posting ? "Posting…" : "Comment"}
+            {posting ? t.comments_submitting : t.comments_submit}
           </button>
         </div>
         <p class="token-hint">
-          Comments post to a GitHub Issue on this repo via a personal access
-          token — nothing goes through any server but GitHub's own API.{" "}
+          {t.comments_hint_pre}{" "}
           <a href={tokenUrl} target="_blank" rel="noopener">
-            Generate one
+            {t.comments_hint_link}
           </a>{" "}
-          (scope: <code>public_repo</code>). It's kept only in this tab's
-          session storage.
+          {t.comments_hint_post}
         </p>
         {errorMsg && <p class="comment-status">{errorMsg}</p>}
       </form>

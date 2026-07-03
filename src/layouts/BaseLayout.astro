@@ -37,7 +37,23 @@ const pageTitle = title ? `${title} · ${siteConfig.title}` : siteConfig.title;
           stored || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
         document.documentElement.setAttribute("data-theme", theme);
       })();
+
+      // Detect locale from the browser before first paint, so [data-lang]
+      // blocks in the markup show the right language with no flash.
+      (function () {
+        var langs =
+          navigator.languages && navigator.languages.length
+            ? navigator.languages
+            : [navigator.language];
+        var isZh = langs.some(function (l) {
+          return l && l.toLowerCase().indexOf("zh") === 0;
+        });
+        document.documentElement.setAttribute("data-locale", isZh ? "zh" : "en");
+      })();
     </script>
+    <noscript>
+      <style set:html={`[data-lang] { display: revert !important; } [data-lang]:not([data-lang="${siteConfig.defaultLocale}"]) { display: none !important; }`} />
+    </noscript>
   </head>
   <body>
     <Header />

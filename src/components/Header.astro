@@ -7,7 +7,14 @@ import { siteConfig } from "../site.config";
   <div class="wrap">
     <a class="brand" href="/">{siteConfig.title}</a>
     <nav class="site-nav">
-      {siteConfig.nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      {
+        siteConfig.nav.map((item) => (
+          <a href={item.href}>
+            <span data-lang="en">{item.en}</span>
+            <span data-lang="zh">{item.zh}</span>
+          </a>
+        ))
+      }
       <ThemeToggle />
     </nav>
   </div>
